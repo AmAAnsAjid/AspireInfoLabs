@@ -1,0 +1,38 @@
+[
+  {
+    "username": "john123",
+    "password": "password123",
+    "email": "amaansajid98@gmail.com",
+    "confirmPassword": "password123",
+    "collegename": "ABC College",
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  {
+    "username": "john123",
+    "password": "password123",
+    "email": "amaan20ucse017@mahindrauniveristy.edu.in",
+    "confirmPassword": "password123",
+    "collegename": "ABC College",
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  {
+    "username": "john123",
+    "password": "password123",
+    "email": "amaan20ucse017@mahindrauniveristy.edu.in",
+    "confirmPassword": "password123",
+    "collegename": "ABC College",
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  {
+    "username": "john123",
+    "password": "password123",
+    "email": "amaan20ucse017@mahindrauniveristy.edu.in",
+    "confirmPassword": "password123",
+    "collegename": "ABC College",
+    "firstname": "John",
+    "lastname": "Doe"
+  }
+]
