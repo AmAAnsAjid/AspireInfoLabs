@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 const authController = require('./controllers/authController');
 const protectedController = require('./controllers/protectedController');
 const registerController = require('./controllers/registerController');
+// Import the forgotpassword and resetpassword controllers
+const forgotpasswordController = require('./controllers/forgotpasswordController');
 
 const app = express();
 const server = http.createServer(app);
@@ -48,6 +50,8 @@ const authenticateToken = (req, res, next) => {
 app.post('/login', authController.login);
 app.get('/protected', authenticateToken, protectedController.protected);
 app.post('/register', registerController.register);
+app.post('/forgotpassword', forgotpasswordController.forgotpassword);
+app.post('/resetpassword', forgotpasswordController.resetpassword);
 
 // Middleware and server setup code...
 
