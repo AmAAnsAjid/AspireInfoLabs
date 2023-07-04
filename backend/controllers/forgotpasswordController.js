@@ -2,6 +2,13 @@ const User = require('../models/User');
 const generateOTP = require('../helpers/otp');
 const sendOTP = require('../helpers/email');
 
+/**
+ * Handle the forgot password request.
+ * Generates and sends an OTP to the user's registered email.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 const forgotpassword = async (req, res) => {
   try {
     const { username } = req.body;
@@ -15,6 +22,7 @@ const forgotpassword = async (req, res) => {
 
     // Generate OTP
     const otp = generateOTP();
+
     // Save the OTP to the user document
     // Send OTP to user's email
     sendOTP(user.email, otp);
@@ -25,6 +33,14 @@ const forgotpassword = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+/**
+ * Handle the reset password request.
+ * Resets the user's password if the provided OTP matches.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 const resetpassword = async (req, res) => {
   try {
     const { username, otp, newPassword } = req.body;
