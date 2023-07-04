@@ -16,23 +16,5 @@
     "collegename": "ABC College",
     "firstname": "John",
     "lastname": "Doe"
-  },
-  {
-    "username": "john123",
-    "password": "password123",
-    "email": "emmanuelle.hickle59@ethereal.email",
-    "confirmPassword": "password123",
-    "collegename": "ABC College",
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  {
-    "username": "john123",
-    "password": "password123",
-    "email": "emmanuelle.hickle59@ethereal.email",
-    "confirmPassword": "password123",
-    "collegename": "ABC College",
-    "firstname": "John",
-    "lastname": "Doe"
   }
 ]
