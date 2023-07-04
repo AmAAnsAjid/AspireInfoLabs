@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const authController = require('./controllers/authController');
 const protectedController = require('./controllers/protectedController');
@@ -12,31 +13,24 @@ const server = http.createServer(app);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/**
- * Handles the login request.
- * Delegates to the authController for login functionality.
- */
+// Connect to MongoDB
+mongoose
+  .connect('mongodb://localhost:27017/mydatabase', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
+  });
+
 app.post('/login', authController.login);
-
-/**
- * Handles the protected route.
- * Delegates to the protectedController for accessing protected routes.
- */
 app.get('/protected', authenticateToken, protectedController.protected);
-
-/**
- * Middleware function to authenticate the token in the request headers.
- * If the token is valid, the user information is added to the request object.
- */
-function authenticateToken(req, res, next) {
-  // ...
-}
-
-/**
- * Handles the registration request.
- * Delegates to the registerController for registration functionality.
- */
 app.post('/register', registerController.register);
+
+// Middleware and server setup code...
 
 // Start the server
 server.listen(5000, () => {

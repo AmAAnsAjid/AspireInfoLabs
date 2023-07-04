@@ -1,36 +1,19 @@
-const fs = require('fs');
-const generateOTP = require('../helpers/otp');
-const sendOTP = require('../helpers/email');
+const mongoose = require('mongoose');
+const User = require('../models/User'); // Assuming you have a User model defined
 
-/**
- * Handles the registration request.
- * Saves the user data to the 'details.json' file.
- * Generates an OTP and sends it to the registered email.
- */
-exports.register = async (req, res) => {
+const register = async (req, res) => {
   try {
-    const userData = req.body; // Assuming req.body contains the user data
+    const userData = req.body;
 
-    // Read the existing data from the file
-    let existingData = [];
-    try {
-      const fileData = fs.readFileSync('details.json');
-      existingData = JSON.parse(fileData);
-    } catch (error) {
-      // If the file does not exist or is empty, no need to throw an error
-      console.log('No existing data found');
-    }
+    // Create a new user document using the User model
+    const user = new User(userData);
 
-    // Add the new user data to the existing data
-    existingData.push(userData);
+    // Save the user document to the database
+    await user.save();
 
-    // Write the updated data back to the file
-    fs.writeFileSync('details.json', JSON.stringify(existingData, null, 2));
+    const otp = generateOTP();
 
-    const otp = generateOTP(); // You can implement your own OTP generation logic
-
-    // Send OTP via email
-    sendOTP(userData.email, otp); // Pass the registered email and OTP to the sendOTP function
+    sendOTP(userData.email, otp);
 
     res.json({ message: 'Registration successful' });
   } catch (error) {
@@ -38,3 +21,15 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+function generateOTP() {
+  // Generate OTP logic here
+  return '123456'; // Replace with your OTP generation code
+}
+
+function sendOTP(email, otp) {
+  // Email sending logic using nodemailer
+  // ...
+}
+
+module.exports = { register };
