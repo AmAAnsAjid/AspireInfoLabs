@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const authController = require('./controllers/authController');
 const protectedController = require('./controllers/protectedController');
@@ -25,6 +26,24 @@ mongoose
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
   });
+
+// Middleware function to authenticate the token
+const authenticateToken = (req, res, next) => {
+  const token = req.headers.authorization;
+
+  if (token) {
+    jwt.verify(token, 'secret-key', (err, decodedToken) => {
+      if (err) {
+        return res.status(401).json({ message: 'Invalid token' });
+      } else {
+        req.user = decodedToken;
+        next();
+      }
+    });
+  } else {
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+};
 
 app.post('/login', authController.login);
 app.get('/protected', authenticateToken, protectedController.protected);
