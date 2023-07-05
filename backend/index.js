@@ -34,11 +34,26 @@ axios.post('http://localhost:5000/login', loginData)
   .then((response) => {
     console.log('Login successful');
     console.log('Token:', response.data.token);
+
+    // After successful login, simulate sending a chat message
+    const chatMessage = {
+      sender: 'jAmaanSajid123', // Replace with the sender's username
+      recipient: 'Siddant123', // Replace with the recipient's username
+      message: 'Hello, how are you?' // Replace with the actual message
+    };
+
+    // Make a POST request to your server's endpoint to send the chat message
+    axios.post('http://localhost:5000/send-chat-message', chatMessage)
+      .then((response) => {
+        console.log('Chat message sent:', response.data);
+      })
+      .catch((error) => {
+        console.error('Error sending chat message:', error);
+      });
   })
   .catch((error) => {
     console.log('Login failed:', error.response.data.message);
   });
-
 
 
 

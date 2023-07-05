@@ -4,11 +4,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
-const authController = require('./controllers/authController');
-const protectedController = require('./controllers/protectedController');
-const registerController = require('./controllers/registerController');
-const forgotpasswordController = require('./controllers/forgotpasswordController');
-
 const app = express();
 const server = http.createServer(app);
 
@@ -46,11 +41,13 @@ const authenticateUser = (req, res, next) => {
   }
 };
 
-app.post('/login', authController.login);
-app.get('/protected', authenticateUser, protectedController.protected);
-app.post('/register', registerController.register);
-app.post('/forgotpassword', forgotpasswordController.forgotpassword);
-app.post('/resetpassword', authenticateUser, forgotpasswordController.resetpassword);
+app.post('/login', (req, res) => {
+  // Implement the login logic
+});
+
+app.post('/send-chat-message', authenticateUser, (req, res) => {
+  // Implement the logic to send the chat message
+});
 
 // Middleware and server setup code...
 
