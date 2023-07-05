@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const authController = require('./controllers/authController');
 const protectedController = require('./controllers/protectedController');
 const registerController = require('./controllers/registerController');
-// Import the forgotpassword and resetpassword controllers
 const forgotpasswordController = require('./controllers/forgotpasswordController');
 
 const app = express();
@@ -29,8 +28,8 @@ mongoose
     console.error('Error connecting to MongoDB:', error);
   });
 
-// Middleware function to authenticate the token
-const authenticateToken = (req, res, next) => {
+// Middleware function to authenticate the user
+const authenticateUser = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (token) {
@@ -48,10 +47,10 @@ const authenticateToken = (req, res, next) => {
 };
 
 app.post('/login', authController.login);
-app.get('/protected', authenticateToken, protectedController.protected);
+app.get('/protected', authenticateUser, protectedController.protected);
 app.post('/register', registerController.register);
 app.post('/forgotpassword', forgotpasswordController.forgotpassword);
-app.post('/resetpassword', forgotpasswordController.resetpassword);
+app.post('/resetpassword', authenticateUser, forgotpasswordController.resetpassword);
 
 // Middleware and server setup code...
 

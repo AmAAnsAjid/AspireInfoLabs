@@ -1,6 +1,6 @@
-// this is my authController.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const authenticateUser = require('../middlewares/authMiddleware');
 
 /**
  * Handles the login request.
@@ -21,7 +21,24 @@ exports.login = async (req, res) => {
       res.status(401).json({ message: 'Invalid username or password' });
     }
   } catch (error) {
-    console.log("Error while searching for username:", error);
+    console.log('Error while searching for username:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
+};
+
+/**
+ * Example protected route that requires authentication.
+ * This route can only be accessed by a logged-in user.
+ */
+exports.protected = (req, res) => {
+  res.json({ message: 'Protected route accessed successfully' });
+};
+
+/**
+ * Example route that is protected and requires authentication.
+ * The `authenticateUser` middleware is used to check if the user is logged in.
+ */
+exports.exampleProtectedRoute = (req, res) => {
+  // Handle the protected route logic here
+  res.json({ message: 'Example protected route accessed successfully' });
 };
