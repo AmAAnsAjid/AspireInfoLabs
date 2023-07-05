@@ -3,13 +3,13 @@ const User = require('../models/User');
 
 /**
  * Middleware function to check if a user is logged in.
- * It verifies the JWT token from the request headers and checks if the user exists in the database.
+ * It verifies the JWT token from the socket handshake and checks if the user exists in the database.
  */
-const authenticateUser = async (req, res, next) => {
-  const token = req.headers.authorization;
+const authenticateUser = async (socket, next) => {
+  const token = socket.handshake.auth.token;
 
   if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    return next(new Error('Unauthorized'));
   }
 
   try {
@@ -20,15 +20,15 @@ const authenticateUser = async (req, res, next) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid user' });
+      return next(new Error('Invalid user'));
     }
 
-    // Store the user object in the request for future use
-    req.user = user;
+    // Store the user object in the socket for future use
+    socket.user = user;
     next();
   } catch (error) {
     console.error('Error verifying token:', error);
-    res.status(401).json({ message: 'Invalid token' });
+    next(new Error('Invalid token'));
   }
 };
 

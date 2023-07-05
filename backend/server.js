@@ -6,9 +6,15 @@ const jwt = require('jsonwebtoken');
 
 const app = express();
 const server = http.createServer(app);
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+const authMiddleware = require('./middlewares/authMiddleware');
+const initChatSocket = require('./sockets/chatSocket');
+const authController = require('./controllers/authController');
+const protectedController = require('./controllers/protectedController');
+const registerController = require('./controllers/registerController');
+const forgotpasswordController = require('./controllers/forgotpasswordController');
 
 // Connect to MongoDB
 mongoose
@@ -41,15 +47,25 @@ const authenticateUser = (req, res, next) => {
   }
 };
 
-app.post('/login', (req, res) => {
-  // Implement the login logic
+app.post('/login', authController.login);
+app.get('/protected', authenticateUser, protectedController.protected);
+app.post('/register', registerController.register);
+app.post('/forgotpassword', forgotpasswordController.forgotpassword);
+app.post('/resetpassword', authenticateUser, forgotpasswordController.resetpassword);
+
+app.post('/send-chat-message', (req, res) => {
+  // Extract the chat message details from the request body
+  const { sender, recipient, message } = req.body;
+
+  // Implement your logic to send the chat message
+  // Here you can use the chat socket to emit the message to the recipient user
+
+  // Return a response indicating the message has been sent
+  res.json({ success: true, message: 'Chat message sent' });
 });
 
-app.post('/send-chat-message', authenticateUser, (req, res) => {
-  // Implement the logic to send the chat message
-});
-
-// Middleware and server setup code...
+// Initialize chat socket
+initChatSocket(server, authMiddleware);
 
 // Start the server
 server.listen(5000, () => {
